@@ -1,7 +1,7 @@
-package com.rain.danmu.client;
+package com.rain.danmu.model;
 
 import com.rain.danmu.util.HttpUtil;
-import com.rain.danmu.util.WbiSign;
+import com.rain.danmu.util.WbiSignUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -46,20 +46,24 @@ public class Auth {
      * @param cookie B站登录Cookie
      * @return Auth认证对象
      */
-    public static Auth create(long roomid, String cookie) throws IOException, InterruptedException {
-        String key = getKey(roomid, cookie),
-                buvid = extractCookieValue("buvid3", cookie);
-        long uid = 0;
+    public static Auth create(long roomid, String cookie) {
         try {
-            // 提取用户ID，失败使用0
-            String uidStr = extractCookieValue("DedeUserID", cookie);
-            if (uidStr != null) {
-                uid = Long.parseLong(Objects.requireNonNull(uidStr));
+            String key = getKey(roomid, cookie),
+                    buvid = extractCookieValue("buvid3", cookie);
+            long uid = 0;
+            try {
+                // 提取用户ID，失败使用0
+                String uidStr = extractCookieValue("DedeUserID", cookie);
+                if (uidStr != null) {
+                    uid = Long.parseLong(Objects.requireNonNull(uidStr));
+                }
+            } catch (Exception e) {
+                // 忽略解析错误，使用默认值0
             }
+            return new Auth(roomid, uid, buvid, key);
         } catch (Exception e) {
-            // 忽略解析错误，使用默认值0
+            throw new RuntimeException(e);
         }
-        return new Auth(roomid, uid, buvid, key);
     }
 
     /**
@@ -70,11 +74,11 @@ public class Auth {
      * @param cookie Cookie
      * @return 弹幕服务器认证密钥
      */
-    private static String getKey(long roomId, String cookie) throws IOException, InterruptedException {
+    private static String getKey(long roomId, String cookie) throws IOException {
         // 使用WBI签名参数
         String signed;
         try {
-            signed = WbiSign.wbiSign(new HashMap<>() {{
+            signed = WbiSignUtil.wbiSign(new HashMap<>() {{
                 put("id", roomId);
                 put("type", "0");
             }});

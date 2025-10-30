@@ -1,8 +1,10 @@
 package com.rain.danmu.client;
 
 import com.rain.danmu.enums.Operation;
+import com.rain.danmu.model.Auth;
 import com.rain.danmu.model.Danmu;
 import com.rain.danmu.model.Message;
+import com.rain.danmu.model.Packet;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;

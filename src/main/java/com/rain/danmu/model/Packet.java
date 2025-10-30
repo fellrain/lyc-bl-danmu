@@ -1,4 +1,4 @@
-package com.rain.danmu.client;
+package com.rain.danmu.model;
 
 import com.rain.danmu.enums.Operation;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import java.util.zip.InflaterInputStream;
 /**
  * B站弹幕协议数据包类
  * 负责数据包的打包和解包操作
- * <p>
+ * 充血模型
  * B站弹幕协议使用固定格式的数据包进行通信：
  * 1. 包长度（4字节）
  * 2. 头部长度（2字节）
