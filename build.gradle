@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.rain'
+
+version = '3.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.java-websocket:Java-WebSocket:1.5.7'
+    implementation 'org.json:json:20230618'
+}
+
+test {
+    useJUnitPlatform()
+}
